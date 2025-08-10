@@ -124,24 +124,30 @@ export default function StudentDashboard() {
                 <span className="text-sm text-gray-700">{user.name}</span>
               </div> */}
 
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Avatar className="cursor-pointer border">
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => signOut()}
-                    className="cursor-pointer"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {session?.data?.user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Avatar className="cursor-pointer border h-10 w-10">
+                      <AvatarFallback>
+                        {(session.data.user.name || "??")
+                          .substring(0, 2)
+                          .toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => signOut()}
+                      className="cursor-pointer"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
         </div>
@@ -151,7 +157,7 @@ export default function StudentDashboard() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {user.name}!
+            Welcome back, {session?.data?.user?.name}!
           </h1>
           <p className="text-gray-600">
             Track your progress and continue your digital competency journey

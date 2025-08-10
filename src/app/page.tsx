@@ -17,8 +17,12 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOption } from "./api/auth/[...nextauth]/options";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await getServerSession(authOption);
+  const user = session?.user;
   const steps = [
     {
       step: "01",
@@ -104,7 +108,7 @@ export default function LandingPage() {
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-blue-600" />
               <span className="text-xl font-bold text-gray-900">
-                Test_School
+                Test School
               </span>
             </div>
             <nav className="hidden md:flex space-x-8">
@@ -130,7 +134,7 @@ export default function LandingPage() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <span>Welcome, Sarah Johnson</span>
+                  <span>Welcome, {user?.name}</span>
                 </div>
                 <Link href="/dashboard">
                   <Button>Go to Dashboard</Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Shield, ArrowLeft, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +35,6 @@ export default function RegisterPage() {
   const [signup, { isLoading }] = useSignUpMutation();
   const [openVerify, setOpenVerify] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
-  const router = useRouter();
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
