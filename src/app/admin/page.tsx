@@ -68,12 +68,12 @@ export default function AdminDashboard() {
   });
 
   // Add these state variables after the existing ones
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [selectedQuestion, setSelectedQuestion] = useState<any | null>(null);
   const [showUserModal, setShowUserModal] = useState(false);
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [activeReport, setActiveReport] = useState(null);
+  const [activeReport, setActiveReport] = useState<any | null>(null);
   const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
     question: "",

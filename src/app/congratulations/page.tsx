@@ -55,8 +55,8 @@ export default function CongratulationsPage() {
     };
   }, [results.score]);
 
-  const getLevelColor = (level) => {
-    const colors = {
+  const getLevelColor = (level: string) => {
+    const colors: Record<string, string> = {
       A1: "bg-red-100 text-red-800 border-red-200",
       A2: "bg-orange-100 text-orange-800 border-orange-200",
       B1: "bg-yellow-100 text-yellow-800 border-yellow-200",
