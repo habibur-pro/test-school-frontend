@@ -29,9 +29,14 @@ import {
 } from "@/components/ui/form";
 import { useVerifySignInMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
+import VerifyOtp from "@/components/pages/VerifyOtp";
+import { signIn } from "next-auth/react";
+import { UserRole } from "@/enum";
 
 export default function LoginPage() {
   const [verifySignIn, { isLoading }] = useVerifySignInMutation();
+  const [openOtp, setOpenOtp] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -43,13 +48,29 @@ export default function LoginPage() {
   const onsubmit = async (data: FieldValues) => {
     try {
       const response = await verifySignIn(data).unwrap();
-      console.log(response);
+      console.log(response, "res", response);
+      const callbackUrl =
+        response?.data?.role == UserRole.STUDENT ? "/dashboard" : "/admin";
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl,
+        redirect: true,
+      });
     } catch (error: any) {
       toast.error(
         error.data?.message || error?.message || "Something went wrong"
       );
+      if (error?.status == 403) {
+        setEmail(data.email);
+        setOpenOtp(true);
+      }
     }
   };
+
+  if (openOtp && email) {
+    return <VerifyOtp email={email as string} setOpen={setOpenOtp} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
