@@ -12,14 +12,15 @@ export const authOption: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch("http://localhost:4000/login", {
+        const res = await fetch(`${process.env.API_BASEURL}/auth/signin`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(credentials),
         });
         const data = await res.json();
-        if (res.ok && data.accessToken) {
-          return data;
+        const user = data?.data;
+        if (res.ok && user.accessToken) {
+          return user;
         }
         return null;
       },
@@ -56,18 +57,19 @@ export const authOption: NextAuthOptions = {
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
-    const res = await fetch("http://localhost:4000/refresh", {
+    const res = await fetch(`${process.env.API_BASEURL}/auth/refresh`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken: token.refreshToken }),
     });
 
     const refreshed = await res.json();
+    console.log("refreshed", refreshed);
     if (!res.ok) throw refreshed;
 
     return {
       ...token,
-      accessToken: refreshed.accessToken,
+      accessToken: refreshed.data?.accessToken,
       accessTokenExpires: Date.now() + 15 * 60 * 1000,
     };
   } catch (err) {

@@ -8,7 +8,7 @@ export const authApi = baseApi.injectEndpoints({
     // user sign-up api endpoint
     signUp: build.mutation({
       query: (signUpData) => ({
-        url: `${ENDPOINT}/sign-up`,
+        url: `${ENDPOINT}/signup`,
         method: "POST",
         body: signUpData,
       }),
@@ -17,7 +17,25 @@ export const authApi = baseApi.injectEndpoints({
     // user sign-in api
     verifySignIn: build.mutation({
       query: (signinData) => ({
-        url: `${ENDPOINT}/verify-sign-in`,
+        url: `${ENDPOINT}/verify-signin`,
+        method: "POST",
+        body: signinData,
+      }),
+      invalidatesTags: [tagTypes.AUTH],
+    }),
+    // verify otp
+    verifyOtp: build.mutation({
+      query: (signinData) => ({
+        url: `${ENDPOINT}/verify-otp`,
+        method: "POST",
+        body: signinData,
+      }),
+      invalidatesTags: [tagTypes.AUTH],
+    }),
+    // resend otp
+    resendOtp: build.mutation({
+      query: (signinData) => ({
+        url: `${ENDPOINT}/resend-otp`,
         method: "POST",
         body: signinData,
       }),
@@ -26,4 +44,9 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useSignUpMutation, useVerifySignInMutation } = authApi;
+export const {
+  useSignUpMutation,
+  useVerifySignInMutation,
+  useVerifyOtpMutation,
+  useResendOtpMutation,
+} = authApi;

@@ -44,3 +44,12 @@ export const loginSchema = z.object({
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+export const verifyOtpSchema = z.object({
+  otp: z
+    .string()
+    .nonempty("OTP is required")
+    .regex(/^\d{6}$/, "OTP must be a 6-digit number"),
+});
+
+export type VerifyOtpFormData = z.infer<typeof verifyOtpSchema>;

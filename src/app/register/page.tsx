@@ -29,9 +29,12 @@ import { RegisterFormData, registerSchema } from "@/validation/auth.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignUpMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
+import VerifyOtp from "@/components/pages/VerifyOtp";
 
 export default function RegisterPage() {
   const [signup, { isLoading }] = useSignUpMutation();
+  const [openVerify, setOpenVerify] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -50,13 +53,17 @@ export default function RegisterPage() {
     try {
       const response = await signup(data).unwrap();
       console.log(response);
+      setOpenVerify(true);
+      setEmail(data.email);
     } catch (error: any) {
       toast.error(
         error.data?.message || error?.message || "Something went wrong"
       );
     }
   };
-
+  if (openVerify && email) {
+    return <VerifyOtp email={email} setOpen={setOpenVerify} />;
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
