@@ -50,7 +50,7 @@ export default function LoginPage() {
       const response = await verifySignIn(data).unwrap();
       console.log(response, "res", response);
       const callbackUrl =
-        response?.data?.role == UserRole.STUDENT ? "/dashboard" : "/admin";
+        response?.data?.role == UserRole.STUDENT ? "/" : "/admin";
       await signIn("credentials", {
         email: data.email,
         password: data.password,
